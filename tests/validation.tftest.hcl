@@ -37,7 +37,8 @@ run "name_too_long" {
   command = plan
 
   variables {
-    name = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm"
+    # 65-character alphanumeric name (one over the 64-char max).
+    name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" # pragma: allowlist secret
   }
 
   expect_failures = [var.name]
