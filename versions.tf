@@ -11,12 +11,14 @@
 // limitations under the License.
 
 terraform {
-  required_version = "~> 1.0"
+  # object(optional()) variables and validation.tftest.hcl mock_provider need Terraform >= 1.7.
+  required_version = "~> 1.7"
 
   required_providers {
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
+    # Launch azurerm floor; < 5.0 until examples/complete is validated on 5.x.
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 3.117, < 5.0"
     }
   }
 }

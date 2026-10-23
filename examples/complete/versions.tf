@@ -10,13 +10,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-variable "length" {
-  description = "Length of the random string to generate."
-  type        = number
-  default     = 24
+terraform {
+  # Matches the root module floor (optional() objects + validation.tftest.hcl).
+  required_version = "~> 1.7"
 
-  validation {
-    condition     = var.length > 0 && var.length < 100
-    error_message = "Length must be a positive integer less than 100."
+  required_providers {
+    # 3.117 is the Launch azurerm floor; < 5.0 until examples/complete is validated on 5.x.
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 3.117, < 5.0"
+    }
   }
 }
