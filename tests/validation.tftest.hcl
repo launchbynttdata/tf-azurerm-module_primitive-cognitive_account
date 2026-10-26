@@ -275,3 +275,37 @@ run "customer_managed_key_and_storage_valid" {
     ]
   }
 }
+
+run "defaults_are_secure" {
+  command = plan
+
+  assert {
+    condition     = azurerm_cognitive_account.cognitive_account.public_network_access_enabled == false
+    error_message = "public_network_access_enabled must default to false."
+  }
+
+  assert {
+    condition     = azurerm_cognitive_account.cognitive_account.local_auth_enabled == false
+    error_message = "local_auth_enabled must default to false."
+  }
+}
+
+# A caller (or wrapper module) passing null must not override the secure defaults.
+run "null_inputs_keep_secure_defaults" {
+  command = plan
+
+  variables {
+    public_network_access_enabled = null
+    local_auth_enabled            = null
+  }
+
+  assert {
+    condition     = azurerm_cognitive_account.cognitive_account.public_network_access_enabled == false
+    error_message = "A null public_network_access_enabled must fall back to false, not the provider default (true)."
+  }
+
+  assert {
+    condition     = azurerm_cognitive_account.cognitive_account.local_auth_enabled == false
+    error_message = "A null local_auth_enabled must fall back to false, not the provider default (true)."
+  }
+}

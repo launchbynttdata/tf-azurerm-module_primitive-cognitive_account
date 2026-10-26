@@ -153,9 +153,10 @@ variable "identity" {
 }
 
 variable "local_auth_enabled" {
-  description = "Whether local authentication methods (API keys) are enabled. Defaults to false."
+  description = "Whether local authentication methods (API keys) are enabled. Defaults to false; null is treated as false."
   type        = bool
   default     = false
+  nullable    = false
 }
 
 variable "metrics_advisor_aad_client_id" {
@@ -241,9 +242,10 @@ variable "project_management_enabled" {
 }
 
 variable "public_network_access_enabled" {
-  description = "Whether public network access is allowed. Defaults to false."
+  description = "Whether public network access is allowed. Defaults to false; null is treated as false."
   type        = bool
   default     = false
+  nullable    = false
 }
 
 variable "qna_runtime_endpoint" {
