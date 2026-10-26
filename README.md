@@ -31,7 +31,7 @@ See [`examples/complete`](./examples/complete) for a full working example.
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.47.0 |
 
@@ -42,13 +42,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_cognitive_account.cognitive_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cognitive_account) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_custom_question_answering_search_service_id"></a> [custom\_question\_answering\_search\_service\_id](#input\_custom\_question\_answering\_search\_service\_id) | Azure AI Search service ID for Custom Question Answering when kind is TextAnalytics. | `string` | `null` | no |
 | <a name="input_custom_question_answering_search_service_key"></a> [custom\_question\_answering\_search\_service\_key](#input\_custom\_question\_answering\_search\_service\_key) | Azure AI Search service key for Custom Question Answering when kind is TextAnalytics. | `string` | `null` | no |
 | <a name="input_custom_subdomain_name"></a> [custom\_subdomain\_name](#input\_custom\_subdomain\_name) | Custom subdomain for Entra ID token-based authentication and Azure OpenAI-style endpoints. Required when network\_acls is set. Once set, changing this forces a new resource. | `string` | `null` | no |
@@ -78,7 +78,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_custom_subdomain_name"></a> [custom\_subdomain\_name](#output\_custom\_subdomain\_name) | Custom subdomain configured on the Cognitive Services account. |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Endpoint URL used to connect to the Cognitive Services account. |
 | <a name="output_id"></a> [id](#output\_id) | Azure resource ID of the Cognitive Services account. |
