@@ -9,20 +9,23 @@ Thin Launch Terraform primitive wrapping a single `azurerm_cognitive_account` re
 
 The complete example uses `kind = "OpenAI"` with Standard SKU `S0` and does not introduce Provisioned Throughput (PTU) SKUs.
 
-Until a release is published to the Launch registry, consumers can pin this branch:
+Minimal usage (set `version` to the latest published release):
 
 ```hcl
 module "cognitive_account" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-cognitive_account.git?ref=feat/initial-module"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/cognitive_account/azurerm"
+  version = "~> 0.2"
 
-  name                = var.name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  kind                = "OpenAI"
-  sku_name            = "S0"
+  name                  = var.name
+  location              = var.location
+  resource_group_name   = var.resource_group_name
+  kind                  = "OpenAI"
+  sku_name              = "S0"
   custom_subdomain_name = var.custom_subdomain_name
 }
 ```
+
+See [`examples/complete`](./examples/complete) for a full working example.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

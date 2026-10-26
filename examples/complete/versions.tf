@@ -15,10 +15,10 @@ terraform {
   required_version = "~> 1.7"
 
   required_providers {
-    # 3.117 is the Launch azurerm floor; < 5.0 until examples/complete is validated on 5.x.
+    # Matches the root module floor (see ../../versions.tf); < 5.0 until examples/complete is validated on 5.x.
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.117, < 5.0"
+      version = ">= 4.47.0, < 5.0"
     }
   }
 }
