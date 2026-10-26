@@ -15,22 +15,30 @@ package test
 import (
 	"testing"
 
-	"github.com/launchbynttdata/launch-terraform-template/tests/testimpl"
 	"github.com/launchbynttdata/lcaf-component-terratest/lib"
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
+	"github.com/launchbynttdata/tf-azurerm-module_primitive-cognitive_account/tests/testimpl"
 )
 
 const (
-	testConfigsExamplesFolderDefault = "../../examples"
-	infraTFVarFileNameDefault        = "test.tfvars"
+	testConfigFolder = "../../examples/complete"
+	testVarFile      = "test.tfvars"
 )
 
-func TestTemplateModule(t *testing.T) {
+func TestComposableComplete(t *testing.T) {
+	t.Parallel()
 
 	ctx := types.CreateTestContextBuilder().
 		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
-		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
-		SetTestConfigFileName(infraTFVarFileNameDefault).
+		SetTestConfigFolderName(testConfigFolder).
+		SetTestConfigFileName(testVarFile).
+		// lcaf's InitAndApplyAndIdempotent discards the post-apply plan (Logger.Discard).
+		// Own the empty-plan check in TestComposableComplete so a drift failure prints the diff.
+		SetTestSpecificFlags(map[string]types.TestFlags{
+			"complete": {
+				"IS_TERRAFORM_IDEMPOTENT_APPLY": false,
+			},
+		}).
 		Build()
 
 	lib.RunSetupTestTeardown(t, *ctx, testimpl.TestComposableComplete)

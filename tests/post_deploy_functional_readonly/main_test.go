@@ -15,23 +15,22 @@ package test
 import (
 	"testing"
 
-	"github.com/launchbynttdata/launch-terraform-template/tests/testimpl"
 	"github.com/launchbynttdata/lcaf-component-terratest/lib"
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
+	"github.com/launchbynttdata/tf-azurerm-module_primitive-cognitive_account/tests/testimpl"
 )
 
 const (
-	testConfigsExamplesFolderDefault = "../../examples"
-	infraTFVarFileNameDefault        = "test.tfvars"
+	testConfigFolder = "../../examples/complete"
+	testVarFile      = "test.tfvars"
 )
 
-func TestTemplateModule(t *testing.T) {
-
+func TestComposableCompleteReadonly(t *testing.T) {
 	ctx := types.CreateTestContextBuilder().
 		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
-		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
-		SetTestConfigFileName(infraTFVarFileNameDefault).
+		SetTestConfigFolderName(testConfigFolder).
+		SetTestConfigFileName(testVarFile).
 		Build()
 
-	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableCompleteReadOnly)
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableCompleteReadonly)
 }
