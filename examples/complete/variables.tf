@@ -105,7 +105,7 @@ variable "identity" {
 variable "local_auth_enabled" {
   description = "Passed through to the module."
   type        = bool
-  default     = null
+  default     = false
 }
 
 variable "metrics_advisor_aad_client_id" {
@@ -170,7 +170,7 @@ variable "project_management_enabled" {
 variable "public_network_access_enabled" {
   description = "Passed through to the module."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "qna_runtime_endpoint" {

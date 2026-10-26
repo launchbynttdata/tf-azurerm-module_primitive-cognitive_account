@@ -31,9 +31,9 @@ See [`examples/complete`](./examples/complete) for a full working example.
 ## Requirements
 
 | Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.7 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.47.0, < 5.0 |
+| ---- | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.47.0 |
 
 ## Modules
 
@@ -42,13 +42,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_cognitive_account.cognitive_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cognitive_account) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_custom_question_answering_search_service_id"></a> [custom\_question\_answering\_search\_service\_id](#input\_custom\_question\_answering\_search\_service\_id) | Azure AI Search service ID for Custom Question Answering when kind is TextAnalytics. | `string` | `null` | no |
 | <a name="input_custom_question_answering_search_service_key"></a> [custom\_question\_answering\_search\_service\_key](#input\_custom\_question\_answering\_search\_service\_key) | Azure AI Search service key for Custom Question Answering when kind is TextAnalytics. | `string` | `null` | no |
 | <a name="input_custom_subdomain_name"></a> [custom\_subdomain\_name](#input\_custom\_subdomain\_name) | Custom subdomain for Entra ID token-based authentication and Azure OpenAI-style endpoints. Required when network\_acls is set. Once set, changing this forces a new resource. | `string` | `null` | no |
@@ -57,7 +57,7 @@ No modules.
 | <a name="input_fqdns"></a> [fqdns](#input\_fqdns) | List of FQDNs allowed for the Cognitive Account. | `list(string)` | `null` | no |
 | <a name="input_identity"></a> [identity](#input\_identity) | Managed identity. type is SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned. | <pre>object({<br/>    type         = string<br/>    identity_ids = optional(list(string))<br/>  })</pre> | `null` | no |
 | <a name="input_kind"></a> [kind](#input\_kind) | Cognitive Services account kind. Common values include OpenAI and AIServices. Changing this forces a new resource except OpenAI ↔ AIServices upgrade/rollback. | `string` | n/a | yes |
-| <a name="input_local_auth_enabled"></a> [local\_auth\_enabled](#input\_local\_auth\_enabled) | Whether local authentication methods (API keys) are enabled. Defaults to the provider default (true) when null. | `bool` | `null` | no |
+| <a name="input_local_auth_enabled"></a> [local\_auth\_enabled](#input\_local\_auth\_enabled) | Whether local authentication methods (API keys) are enabled. Defaults to false. | `bool` | `false` | no |
 | <a name="input_location"></a> [location](#input\_location) | Azure region of the Cognitive Services account. Changing this forces a new resource. | `string` | n/a | yes |
 | <a name="input_metrics_advisor_aad_client_id"></a> [metrics\_advisor\_aad\_client\_id](#input\_metrics\_advisor\_aad\_client\_id) | Azure AD application (client) ID. Only for kind MetricsAdvisor. Changing this forces a new resource. | `string` | `null` | no |
 | <a name="input_metrics_advisor_aad_tenant_id"></a> [metrics\_advisor\_aad\_tenant\_id](#input\_metrics\_advisor\_aad\_tenant\_id) | Azure AD tenant ID. Only for kind MetricsAdvisor. Changing this forces a new resource. | `string` | `null` | no |
@@ -68,7 +68,7 @@ No modules.
 | <a name="input_network_injection"></a> [network\_injection](#input\_network\_injection) | Network injection for AIServices agent features. scenario must be agent. | <pre>object({<br/>    scenario  = string<br/>    subnet_id = string<br/>  })</pre> | `null` | no |
 | <a name="input_outbound_network_access_restricted"></a> [outbound\_network\_access\_restricted](#input\_outbound\_network\_access\_restricted) | Whether outbound network access is restricted. Defaults to the provider default (false) when null. | `bool` | `null` | no |
 | <a name="input_project_management_enabled"></a> [project\_management\_enabled](#input\_project\_management\_enabled) | Whether project management is enabled. Can only be true when kind is AIServices. | `bool` | `null` | no |
-| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Whether public network access is allowed. Defaults to the provider default (true) when null. | `bool` | `null` | no |
+| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Whether public network access is allowed. Defaults to false. | `bool` | `false` | no |
 | <a name="input_qna_runtime_endpoint"></a> [qna\_runtime\_endpoint](#input\_qna\_runtime\_endpoint) | QnA Maker runtime endpoint URL. Required when kind is QnAMaker. | `string` | `null` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group containing the Cognitive Services account. Changing this forces a new resource. | `string` | n/a | yes |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | SKU name for the Cognitive Services account. Use Standard-class SKUs such as S0 for OpenAI; do not use Provisioned Throughput (PTU) SKUs here. | `string` | n/a | yes |
@@ -78,7 +78,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_custom_subdomain_name"></a> [custom\_subdomain\_name](#output\_custom\_subdomain\_name) | Custom subdomain configured on the Cognitive Services account. |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Endpoint URL used to connect to the Cognitive Services account. |
 | <a name="output_id"></a> [id](#output\_id) | Azure resource ID of the Cognitive Services account. |

@@ -78,14 +78,14 @@ module "cognitive_account" {
 ## Requirements
 
 | Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.7 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.47.0, < 5.0 |
+| ---- | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.47.0 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_cognitive_account"></a> [cognitive\_account](#module\_cognitive\_account) | ../.. | n/a |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm | ~> 1.0 |
 | <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | terraform.registry.launch.nttdata.com/module_library/resource_name/launch | ~> 2.0 |
@@ -97,7 +97,7 @@ No resources.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_class_env"></a> [class\_env](#input\_class\_env) | Environment class used for resource naming. | `string` | `"dev"` | no |
 | <a name="input_custom_question_answering_search_service_id"></a> [custom\_question\_answering\_search\_service\_id](#input\_custom\_question\_answering\_search\_service\_id) | Passed through to the module. | `string` | `null` | no |
 | <a name="input_custom_question_answering_search_service_key"></a> [custom\_question\_answering\_search\_service\_key](#input\_custom\_question\_answering\_search\_service\_key) | Passed through to the module. | `string` | `null` | no |
@@ -109,7 +109,7 @@ No resources.
 | <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Numeric environment instance used for resource naming. | `number` | `0` | no |
 | <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Numeric resource instance used for resource naming. | `number` | `0` | no |
 | <a name="input_kind"></a> [kind](#input\_kind) | Cognitive Services account kind passed to the module. | `string` | `"OpenAI"` | no |
-| <a name="input_local_auth_enabled"></a> [local\_auth\_enabled](#input\_local\_auth\_enabled) | Passed through to the module. | `bool` | `null` | no |
+| <a name="input_local_auth_enabled"></a> [local\_auth\_enabled](#input\_local\_auth\_enabled) | Passed through to the module. | `bool` | `false` | no |
 | <a name="input_location"></a> [location](#input\_location) | Azure region in which to deploy the example. | `string` | `"eastus"` | no |
 | <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | Logical product family used for resource naming. | `string` | `"launch"` | no |
 | <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | Logical product service used for resource naming. | `string` | `"cogacct"` | no |
@@ -121,7 +121,7 @@ No resources.
 | <a name="input_network_injection"></a> [network\_injection](#input\_network\_injection) | Passed through to the module. | <pre>object({<br/>    scenario  = string<br/>    subnet_id = string<br/>  })</pre> | `null` | no |
 | <a name="input_outbound_network_access_restricted"></a> [outbound\_network\_access\_restricted](#input\_outbound\_network\_access\_restricted) | Passed through to the module. | `bool` | `null` | no |
 | <a name="input_project_management_enabled"></a> [project\_management\_enabled](#input\_project\_management\_enabled) | Passed through to the module. | `bool` | `null` | no |
-| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Passed through to the module. | `bool` | `true` | no |
+| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Passed through to the module. | `bool` | `false` | no |
 | <a name="input_qna_runtime_endpoint"></a> [qna\_runtime\_endpoint](#input\_qna\_runtime\_endpoint) | Passed through to the module. | `string` | `null` | no |
 | <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | Map of resource naming keys to cloud abbreviations and maximum lengths. | <pre>map(object({<br/>    name       = string<br/>    max_length = number<br/>  }))</pre> | n/a | yes |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | Cognitive Services account SKU passed to the module. Example uses Standard S0 (not PTU). | `string` | `"S0"` | no |
@@ -131,7 +131,7 @@ No resources.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_custom_subdomain_name"></a> [custom\_subdomain\_name](#output\_custom\_subdomain\_name) | Custom subdomain of the Cognitive Services account. |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Endpoint URL of the Cognitive Services account. |
 | <a name="output_id"></a> [id](#output\_id) | Azure resource ID of the Cognitive Services account. |

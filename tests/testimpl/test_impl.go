@@ -41,6 +41,7 @@ const (
 type expectedSettings struct {
 	kind                       string
 	sku                        string
+	localAuthEnabled           bool
 	publicNetworkAccessEnabled bool
 	tags                       map[string]string
 }
@@ -54,10 +55,13 @@ func loadExpectedSettings(t *testing.T, ctx types.TestContext) expectedSettings 
 
 	publicAccess, err := strconv.ParseBool(terraform.GetVariableAsStringFromVarFile(t, varFile, "public_network_access_enabled"))
 	require.NoError(t, err, "parse public_network_access_enabled from %s", varFile)
+	localAuth, err := strconv.ParseBool(terraform.GetVariableAsStringFromVarFile(t, varFile, "local_auth_enabled"))
+	require.NoError(t, err, "parse local_auth_enabled from %s", varFile)
 
 	return expectedSettings{
 		kind:                       terraform.GetVariableAsStringFromVarFile(t, varFile, "kind"),
 		sku:                        terraform.GetVariableAsStringFromVarFile(t, varFile, "sku_name"),
+		localAuthEnabled:           localAuth,
 		publicNetworkAccessEnabled: publicAccess,
 		tags:                       terraform.GetVariableAsMapFromVarFile(t, varFile, "tags"),
 	}
@@ -144,6 +148,9 @@ func assertConfiguredAccount(t *testing.T, ctx types.TestContext, testCtx accoun
 	assert.Equal(t, testCtx.endpoint, *account.Properties.Endpoint)
 	require.NotNil(t, account.Properties.CustomSubDomainName)
 	assert.Equal(t, testCtx.customSubdomain, *account.Properties.CustomSubDomainName)
+	require.NotNil(t, account.Properties.DisableLocalAuth)
+	// Azure reports the inverse of Terraform's local_auth_enabled setting.
+	assert.Equal(t, !expected.localAuthEnabled, *account.Properties.DisableLocalAuth)
 
 	expectedAccess := armcognitiveservices.PublicNetworkAccessDisabled
 	if expected.publicNetworkAccessEnabled {

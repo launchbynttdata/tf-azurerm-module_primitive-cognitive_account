@@ -11,14 +11,13 @@
 // limitations under the License.
 
 terraform {
-  # Matches the root module floor (optional() objects + validation.tftest.hcl).
-  required_version = "~> 1.7"
+  # resource_name consumed by this example requires Terraform >= 1.5.
+  required_version = "~> 1.5"
 
   required_providers {
-    # Matches the root module floor (see ../../versions.tf); < 5.0 until examples/complete is validated on 5.x.
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.47.0, < 5.0"
+      version = ">= 4.47.0"
     }
   }
 }

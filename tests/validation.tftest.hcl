@@ -4,11 +4,12 @@
 mock_provider "azurerm" {}
 
 variables {
-  name                = "oai-example01"
-  location            = "eastus"
-  resource_group_name = "rg-example"
-  kind                = "OpenAI"
-  sku_name            = "S0"
+  name                  = "oai-example01"
+  location              = "eastus"
+  resource_group_name   = "rg-example"
+  kind                  = "OpenAI"
+  sku_name              = "S0"
+  custom_subdomain_name = "oai-example01"
 }
 
 run "required_inputs_only" {
@@ -110,12 +111,33 @@ run "network_acls_requires_custom_subdomain" {
   command = plan
 
   variables {
+    custom_subdomain_name = null
     network_acls = {
       default_action = "Deny"
     }
   }
 
   expect_failures = [azurerm_cognitive_account.cognitive_account]
+}
+
+run "local_auth_disabled_requires_custom_subdomain" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = null
+    local_auth_enabled    = false
+  }
+
+  expect_failures = [azurerm_cognitive_account.cognitive_account]
+}
+
+run "local_auth_enabled_without_custom_subdomain_valid" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = null
+    local_auth_enabled    = true
+  }
 }
 
 run "custom_subdomain_name_valid" {

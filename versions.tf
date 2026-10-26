@@ -11,15 +11,16 @@
 // limitations under the License.
 
 terraform {
-  # object(optional()) variables and validation.tftest.hcl mock_provider need Terraform >= 1.7.
-  required_version = "~> 1.7"
+  # optional() object attributes require Terraform >= 1.3.
+  # validation.tftest.hcl uses mock_provider, which requires Terraform >= 1.7,
+  # but that test-only requirement does not apply to module consumers.
+  required_version = "~> 1.3"
 
   required_providers {
     # project_management_enabled, network_acls.bypass, and network_injection require AzureRM >= 4.47.0.
-    # Keep < 5.0 until examples/complete is validated on 5.x.
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.47.0, < 5.0"
+      version = ">= 4.47.0"
     }
   }
 }

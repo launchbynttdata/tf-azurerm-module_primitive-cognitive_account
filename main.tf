@@ -88,5 +88,10 @@ resource "azurerm_cognitive_account" "cognitive_account" {
       condition     = var.network_acls == null || var.custom_subdomain_name != null
       error_message = "custom_subdomain_name must be set when network_acls is configured."
     }
+
+    precondition {
+      condition     = var.local_auth_enabled || var.custom_subdomain_name != null
+      error_message = "custom_subdomain_name must be set when local_auth_enabled is false."
+    }
   }
 }

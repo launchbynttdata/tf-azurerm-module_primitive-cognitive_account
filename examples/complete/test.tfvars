@@ -19,7 +19,8 @@ resource_names_map = {
 kind     = "OpenAI"
 sku_name = "S0"
 
-public_network_access_enabled = true
+local_auth_enabled            = false
+public_network_access_enabled = false
 
 tags = {
   Environment = "test"
