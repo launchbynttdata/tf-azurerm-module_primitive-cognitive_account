@@ -117,3 +117,139 @@ run "network_acls_requires_custom_subdomain" {
 
   expect_failures = [azurerm_cognitive_account.cognitive_account]
 }
+
+run "custom_subdomain_name_valid" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = "oai-example01"
+  }
+}
+
+run "custom_subdomain_name_invalid" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = "-bad-subdomain"
+  }
+
+  expect_failures = [var.custom_subdomain_name]
+}
+
+run "identity_system_assigned_valid" {
+  command = plan
+
+  variables {
+    identity = {
+      type = "SystemAssigned"
+    }
+  }
+}
+
+run "identity_user_assigned_valid" {
+  command = plan
+
+  variables {
+    identity = {
+      type         = "UserAssigned"
+      identity_ids = ["/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id-example"]
+    }
+  }
+}
+
+run "network_acls_valid" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = "oai-example01"
+
+    network_acls = {
+      default_action = "Deny"
+      bypass         = "AzureServices"
+      ip_rules       = ["203.0.113.10"]
+      virtual_network_rules = [
+        {
+          subnet_id                            = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example/providers/Microsoft.Network/virtualNetworks/vnet-example/subnets/snet-example"
+          ignore_missing_vnet_service_endpoint = true
+        }
+      ]
+    }
+  }
+}
+
+run "network_acls_default_action_invalid" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = "oai-example01"
+
+    network_acls = {
+      default_action = "Block"
+    }
+  }
+
+  expect_failures = [var.network_acls]
+}
+
+run "network_acls_bypass_invalid" {
+  command = plan
+
+  variables {
+    custom_subdomain_name = "oai-example01"
+
+    network_acls = {
+      default_action = "Deny"
+      bypass         = "Everything"
+    }
+  }
+
+  expect_failures = [var.network_acls]
+}
+
+run "network_injection_valid" {
+  command = plan
+
+  variables {
+    kind = "AIServices"
+
+    network_injection = {
+      scenario  = "agent"
+      subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example/providers/Microsoft.Network/virtualNetworks/vnet-example/subnets/snet-agent"
+    }
+  }
+}
+
+run "network_injection_scenario_invalid" {
+  command = plan
+
+  variables {
+    kind = "AIServices"
+
+    network_injection = {
+      scenario  = "none"
+      subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example/providers/Microsoft.Network/virtualNetworks/vnet-example/subnets/snet-agent"
+    }
+  }
+
+  expect_failures = [var.network_injection]
+}
+
+run "customer_managed_key_and_storage_valid" {
+  command = plan
+
+  variables {
+    identity = {
+      type = "SystemAssigned"
+    }
+
+    customer_managed_key = {
+      key_vault_key_id = "https://kv-example.vault.azure.net/keys/key-example/00000000000000000000000000000000"
+    }
+
+    storage = [
+      {
+        storage_account_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example/providers/Microsoft.Storage/storageAccounts/stexample"
+      }
+    ]
+  }
+}

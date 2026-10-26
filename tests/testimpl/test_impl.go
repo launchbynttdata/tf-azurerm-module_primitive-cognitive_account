@@ -14,6 +14,8 @@ package testimpl
 
 import (
 	"os"
+	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -30,11 +32,36 @@ import (
 )
 
 const (
-	expectedKind     = "OpenAI"
-	expectedSKU      = "S0"
 	functionalTagKey = "terratest_mutation"
 	functionalTagVal = "updated"
 )
+
+// expectedSettings holds the inputs the example was applied with, read from the
+// test var file so the assertions follow test.tfvars instead of duplicating it.
+type expectedSettings struct {
+	kind                       string
+	sku                        string
+	publicNetworkAccessEnabled bool
+	tags                       map[string]string
+}
+
+func loadExpectedSettings(t *testing.T, ctx types.TestContext) expectedSettings {
+	t.Helper()
+
+	tfOptions := ctx.TerratestTerraformOptions()
+	require.NotEmpty(t, tfOptions.VarFiles, "terraform options must reference a var file")
+	varFile := filepath.Join(tfOptions.TerraformDir, tfOptions.VarFiles[0])
+
+	publicAccess, err := strconv.ParseBool(terraform.GetVariableAsStringFromVarFile(t, varFile, "public_network_access_enabled"))
+	require.NoError(t, err, "parse public_network_access_enabled from %s", varFile)
+
+	return expectedSettings{
+		kind:                       terraform.GetVariableAsStringFromVarFile(t, varFile, "kind"),
+		sku:                        terraform.GetVariableAsStringFromVarFile(t, varFile, "sku_name"),
+		publicNetworkAccessEnabled: publicAccess,
+		tags:                       terraform.GetVariableAsMapFromVarFile(t, varFile, "tags"),
+	}
+}
 
 type accountTestContext struct {
 	client            *armcognitiveservices.AccountsClient
@@ -98,6 +125,7 @@ func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
 func assertConfiguredAccount(t *testing.T, ctx types.TestContext, testCtx accountTestContext) {
 	t.Helper()
 
+	expected := loadExpectedSettings(t, ctx)
 	account := getAccount(t, testCtx)
 
 	require.NotNil(t, account.ID)
@@ -106,10 +134,10 @@ func assertConfiguredAccount(t *testing.T, ctx types.TestContext, testCtx accoun
 	assert.Equal(t, testCtx.accountName, *account.Name)
 
 	require.NotNil(t, account.Kind)
-	assert.Equal(t, expectedKind, *account.Kind)
+	assert.Equal(t, expected.kind, *account.Kind)
 	require.NotNil(t, account.SKU)
 	require.NotNil(t, account.SKU.Name)
-	assert.Equal(t, expectedSKU, *account.SKU.Name)
+	assert.Equal(t, expected.sku, *account.SKU.Name)
 
 	require.NotNil(t, account.Properties)
 	require.NotNil(t, account.Properties.Endpoint)
@@ -117,10 +145,24 @@ func assertConfiguredAccount(t *testing.T, ctx types.TestContext, testCtx accoun
 	require.NotNil(t, account.Properties.CustomSubDomainName)
 	assert.Equal(t, testCtx.customSubdomain, *account.Properties.CustomSubDomainName)
 
+	expectedAccess := armcognitiveservices.PublicNetworkAccessDisabled
+	if expected.publicNetworkAccessEnabled {
+		expectedAccess = armcognitiveservices.PublicNetworkAccessEnabled
+	}
+	require.NotNil(t, account.Properties.PublicNetworkAccess)
+	assert.Equal(t, expectedAccess, *account.Properties.PublicNetworkAccess)
+
+	for key, want := range expected.tags {
+		got, ok := account.Tags[key]
+		require.True(t, ok, "tag %q missing on account", key)
+		require.NotNil(t, got)
+		assert.Equal(t, want, *got, "tag %q mismatch", key)
+	}
+
 	tfOptions := ctx.TerratestTerraformOptions()
 	outputContext := t.Context()
-	assert.Equal(t, expectedKind, terraform.OutputContext(t, outputContext, tfOptions, "kind"))
-	assert.Equal(t, expectedSKU, terraform.OutputContext(t, outputContext, tfOptions, "sku_name"))
+	assert.Equal(t, expected.kind, terraform.OutputContext(t, outputContext, tfOptions, "kind"))
+	assert.Equal(t, expected.sku, terraform.OutputContext(t, outputContext, tfOptions, "sku_name"))
 }
 
 func assertPostApplyPlanEmpty(t *testing.T, ctx types.TestContext) {
